@@ -1,12 +1,6 @@
 import configparser
 import os
 
-from square_logger.main import SquareLogger
-
-from lapa_commons import MODULE_NAME
-
-global_object_square_logger = SquareLogger(MODULE_NAME)
-
 
 def read_configuration_from_file_path(pstr_file_path: str) -> dict:
     """
@@ -15,18 +9,15 @@ def read_configuration_from_file_path(pstr_file_path: str) -> dict:
     If path does not exist -> Log error and return empty dictionary.
 
     :param pstr_file_path: path of the configuration file.
-    :return: dictionary containing the output as key-value pair.
+    :return: dictionary containing the output as section name and then key-value pair.
     """
     try:
-        ldict_configuration_variables = dict()
         # ====================================================================
         # Validate the datatype of pstr_file_path
         # ====================================================================
         if not isinstance(pstr_file_path, str):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pstr_file_path.'
-                f' Received datatype - {str(type(pstr_file_path))}, Expected datatype - str.', exc_info=True)
-            return ldict_configuration_variables
+            raise Exception('Invalid datatype received for pstr_file_path.'
+                            f' Received datatype - {str(type(pstr_file_path))}, Expected datatype - str.')
 
         # ====================================================================
         # Check if the file path exists
@@ -34,9 +25,7 @@ def read_configuration_from_file_path(pstr_file_path: str) -> dict:
         if os.path.exists(pstr_file_path):
             return read_configuration(pstr_file_path)
         else:
-            global_object_square_logger.logger.error(f'File does not exists. File path - {str(pstr_file_path)}',
-                                                     exc_info=True)
-            raise
+            raise Exception(f'File does not exists. File path - {str(pstr_file_path)}')
     except Exception:
         raise
 
@@ -46,8 +35,8 @@ def read_configuration(pstr_file_path: str) -> dict:
     Description: This function is used to read the configuration file.
 
     :param pstr_file_path: path of the configuration file.
-    :return: dictionary containing the output as key-value pair.
-    :example: {'Env_One': 'One', 'Env_Three': 'Three', 'Env_Two': 'Two'}
+    :return: dictionary containing the output as section name and then key-value pair.
+    :example: {'API': {'API_KEY': 'abcdef1234567890', 'BASE_URL': 'https://api.example.com/v1'}, 'ENVIRONMENT': {'log_level': 'INFO'}}
     """
     try:
         ldict_configuration_variables = dict()
@@ -103,38 +92,35 @@ def read_configuration_variables(pobj_configparser: object,
     """
     try:
         if not isinstance(pobj_configparser, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pobj_configparser.'
-                f' Received datatype - {str(type(pobj_configparser))}, Expected datatype - object.', exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pobj_configparser.'
+                            f' Received datatype - {str(type(pobj_configparser))}, Expected datatype - object.')
 
         if not isinstance(pstr_configuration_section, str):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pstr_configuration_section.'
-                f' Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pstr_configuration_section.'
+                            f' Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str.')
 
         if not isinstance(plst_configuration_variables, list):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for plst_configuration_variables.'
-                f' Received datatype - {str(type(plst_configuration_variables))}, Expected datatype - list.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for plst_configuration_variables.'
+                            f' Received datatype - {str(type(plst_configuration_variables))}, Expected datatype - list.')
 
         if not isinstance(pdict_configuration_variables, dict):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pdict_configuration_variables.'
-                f' Received datatype - {str(type(pdict_configuration_variables))}, Expected datatype - dict.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pdict_configuration_variables.'
+                            f' Received datatype - {str(type(pdict_configuration_variables))}, Expected datatype - dict.')
 
+        ldict_configuration = dict()
         for lstr_configuration_variable in plst_configuration_variables:
-            pdict_configuration_variables[lstr_configuration_variable] = read_configuration_using_configparser(
+            ldict_configuration[lstr_configuration_variable] = read_configuration_using_configparser(
                 pobj_configparser, pstr_configuration_section, lstr_configuration_variable)
+
+        # ====================================================================
+        # Insert the configuration dictionary insider the section key
+        # ====================================================================
+        pdict_configuration_variables[pstr_configuration_section] = ldict_configuration
         return pdict_configuration_variables
     except Exception:
         raise
+    finally:
+        del ldict_configuration
 
 
 def read_environment_configuration_variables(pobj_configparser: object,
@@ -155,32 +141,22 @@ def read_environment_configuration_variables(pobj_configparser: object,
     """
     try:
         if not isinstance(pobj_configparser, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pobj_configparser.'
-                f' Received datatype - {str(type(pobj_configparser))}, Expected datatype - object.', exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pobj_configparser.'
+                            f' Received datatype - {str(type(pobj_configparser))}, Expected datatype - object.')
 
         if not isinstance(pstr_configuration_section, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pstr_configuration_section.'
-                f' Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pstr_configuration_section.'
+                            f' Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str.')
 
         if not isinstance(plst_environment_variables, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for plst_environment_variables.'
-                f' Received datatype - {str(type(plst_environment_variables))}, Expected datatype - list.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for plst_environment_variables.'
+                            f' Received datatype - {str(type(plst_environment_variables))}, Expected datatype - list.')
 
         if not isinstance(pdict_configuration_variables, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pdict_configuration_variables.'
-                f' Received datatype - {str(type(pdict_configuration_variables))}, Expected datatype - dict.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pdict_configuration_variables.'
+                            f' Received datatype - {str(type(pdict_configuration_variables))}, Expected datatype - dict.')
 
+        ldict_configuration = dict()
         for lstr_environment_variable in plst_environment_variables:
             lstr_environment_variable_os_value = os.environ.get(lstr_environment_variable)
             if lstr_environment_variable_os_value is not None:
@@ -192,11 +168,18 @@ def read_environment_configuration_variables(pobj_configparser: object,
                 # ====================================================================
                 # Environment variable not found in the OS, reading from the configuration file
                 # ====================================================================
-                pdict_configuration_variables[lstr_environment_variable] = read_configuration_using_configparser(
+                ldict_configuration[lstr_environment_variable] = read_configuration_using_configparser(
                     pobj_configparser, pstr_configuration_section, lstr_environment_variable)
+
+        # ====================================================================
+        # Insert the configuration dictionary insider the section key
+        # ====================================================================
+        pdict_configuration_variables[pstr_configuration_section] = ldict_configuration
         return pdict_configuration_variables
     except Exception:
         raise
+    finally:
+        del ldict_configuration
 
 
 def read_configuration_using_configparser(pobj_configparser: object,
@@ -212,23 +195,16 @@ def read_configuration_using_configparser(pobj_configparser: object,
     """
     try:
         if not isinstance(pobj_configparser, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pobj_configparser.'
-                f' Received datatype - {str(type(pobj_configparser))}, Expected datatype - object.', exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pobj_configparser.'
+                            f' Received datatype - {str(type(pobj_configparser))}, Expected datatype - object.')
 
         if not isinstance(pstr_configuration_section, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pstr_configuration_section.'
-                f' Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str.',
-                exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pstr_configuration_section.'
+                            f' Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str.')
 
         if not isinstance(pstr_variable_name, object):
-            global_object_square_logger.logger.error(
-                'Invalid datatype received for pstr_variable_name.'
-                f' Received datatype - {str(type(pstr_variable_name))}, Expected datatype - str.', exc_info=True)
-            raise
+            raise Exception('Invalid datatype received for pstr_variable_name.'
+                            f' Received datatype - {str(type(pstr_variable_name))}, Expected datatype - str.')
 
         return pobj_configparser.get(pstr_configuration_section, pstr_variable_name)
     except Exception:
