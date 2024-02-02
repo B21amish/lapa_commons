@@ -7,7 +7,6 @@ setup(
     version="0.0.1",
     packages=find_packages(),
     install_requires=[
-        "square_logger~=1.0",
         "configparser>=6.0.0"
     ],
     extras_require={},
