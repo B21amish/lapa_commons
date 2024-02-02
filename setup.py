@@ -6,16 +6,14 @@ setup(
     name=package_name,
     version="0.0.1",
     packages=find_packages(),
-    package_data={
-        package_name: ["data/*"],
-    },
     install_requires=[
-        "square_logger~=1.0"
+        "square_logger~=1.0",
+        "configparser>=6.0.0"
     ],
     extras_require={},
     author="Lav Sharma",
     author_email="lavsharma2016@gmail.com",
-    description="Commons for personal project.",
+    description="Lapa commons used for reading the configuration file.",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
     url=f"https://github.com/lavvsharma/{package_name}",
