@@ -50,6 +50,10 @@ ldict_configuration = read_configuration_from_file_path('/home/lavsharma/python-
 
 ## Changelog
 
+### v0.0.2
+
+- bug fix when reading environment variables.
+
 ### v0.0.1
 
 1. configparser added in the dependency.
