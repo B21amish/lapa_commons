@@ -4,14 +4,12 @@ package_name = "lapa_commons"
 
 setup(
     name=package_name,
-    version="0.0.1",
+    version="0.0.2",
     packages=find_packages(),
-    install_requires=[
-        "configparser>=6.0.0"
-    ],
+    install_requires=["configparser>=6.0.0"],
     extras_require={},
-    author="Lav Sharma",
-    author_email="lavsharma2016@gmail.com",
+    author="Lav Sharma, thePmSquare",
+    author_email="lavsharma2016@gmail.com, thepmsquare@gmail.com",
     description="Lapa commons used for reading the configuration file.",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
