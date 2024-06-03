@@ -50,6 +50,12 @@ ldict_configuration = read_configuration_from_file_path('/home/lavsharma/python-
 
 ## Changelog
 
+### v0.0.3
+
+- treat all sections as environment variables.
+- import read_configuration_from_file_path in init file.
+- update repo link in setup.py.
+
 ### v0.0.2
 
 - bug fix when reading environment variables.

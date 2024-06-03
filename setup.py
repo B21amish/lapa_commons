@@ -4,7 +4,7 @@ package_name = "lapa_commons"
 
 setup(
     name=package_name,
-    version="0.0.2",
+    version="0.0.3",
     packages=find_packages(),
     install_requires=["configparser>=6.0.0"],
     extras_require={},
@@ -13,7 +13,7 @@ setup(
     description="Lapa commons used for reading the configuration file.",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
-    url=f"https://github.com/lavvsharma/{package_name}",
+    url=f"https://github.com/B21amish/{package_name}",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
