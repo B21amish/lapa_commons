@@ -56,100 +56,21 @@ def read_configuration(pstr_file_path: str) -> dict:
         # Iterate over each configuration section
         # ====================================================================
         for lstr_configuration_section in llst_configuration_sections:
-            # ====================================================================
-            # If the configuration section is environment call read_environment_configuration_variables()
-            # ====================================================================
-            if lstr_configuration_section.lower() == "environment":
-                llst_environment_variables = lobj_configparser.options(
-                    lstr_configuration_section
-                )
-                ldict_configuration_variables = (
-                    read_environment_configuration_variables(
-                        lobj_configparser,
-                        lstr_configuration_section,
-                        llst_environment_variables,
-                        ldict_configuration_variables,
-                    )
-                )
-            else:
-                # ====================================================================
-                # Read the configuration section using read_configuration_variables() function
-                # ====================================================================
-                llst_configuration_variables = lobj_configparser.options(
-                    lstr_configuration_section
-                )
-                ldict_configuration_variables = read_configuration_variables(
-                    lobj_configparser,
-                    lstr_configuration_section,
-                    llst_configuration_variables,
-                    ldict_configuration_variables,
-                )
+            llst_environment_variables = lobj_configparser.options(
+                lstr_configuration_section
+            )
+            ldict_configuration_variables = read_environment_configuration_variables(
+                lobj_configparser,
+                lstr_configuration_section,
+                llst_environment_variables,
+                ldict_configuration_variables,
+            )
+
         return ldict_configuration_variables
     except Exception:
         raise
     finally:
         del lobj_configparser
-
-
-def read_configuration_variables(
-    pobj_configparser: object,
-    pstr_configuration_section: str,
-    plst_configuration_variables: list,
-    pdict_configuration_variables: dict,
-) -> dict:
-    """
-    Description: This function is used to read the configuration variables for a particular section.
-
-    :param pobj_configparser: configparser object
-    :param pstr_configuration_section: section of the configuration file
-    :param plst_configuration_variables: list of configuration variables
-    :param pdict_configuration_variables: output dictionary which will contain all the key-value pair
-    :return: pdict_configuration_variables
-    """
-    try:
-        if not isinstance(pobj_configparser, object):
-            raise Exception(
-                "Invalid datatype received for pobj_configparser."
-                f" Received datatype - {str(type(pobj_configparser))}, Expected datatype - object."
-            )
-
-        if not isinstance(pstr_configuration_section, str):
-            raise Exception(
-                "Invalid datatype received for pstr_configuration_section."
-                f" Received datatype - {str(type(pstr_configuration_section))}, Expected datatype - str."
-            )
-
-        if not isinstance(plst_configuration_variables, list):
-            raise Exception(
-                "Invalid datatype received for plst_configuration_variables."
-                f" Received datatype - {str(type(plst_configuration_variables))}, Expected datatype - list."
-            )
-
-        if not isinstance(pdict_configuration_variables, dict):
-            raise Exception(
-                "Invalid datatype received for pdict_configuration_variables."
-                f" Received datatype - {str(type(pdict_configuration_variables))}, Expected datatype - dict."
-            )
-
-        ldict_configuration = dict()
-        for lstr_configuration_variable in plst_configuration_variables:
-            ldict_configuration[lstr_configuration_variable] = (
-                read_configuration_using_configparser(
-                    pobj_configparser,
-                    pstr_configuration_section,
-                    lstr_configuration_variable,
-                )
-            )
-
-        # ====================================================================
-        # Insert the configuration dictionary insider the section key
-        # ====================================================================
-        pdict_configuration_variables[pstr_configuration_section] = ldict_configuration
-        return pdict_configuration_variables
-    except Exception:
-        raise
-    finally:
-        del ldict_configuration
 
 
 def read_environment_configuration_variables(
