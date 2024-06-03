@@ -1,1 +1,1 @@
-MODULE_NAME = 'lapa_commons'
+from lapa_commons.main import read_configuration_from_file_path
